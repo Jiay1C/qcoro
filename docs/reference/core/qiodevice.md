@@ -51,7 +51,7 @@ const QByteArray content = co_await device;
 instead of
 
 ```cpp
-const QByteArray content = qCoro(device).readAll();
+const QByteArray content = co_await qCoro(device).readAll();
 ```
 
 See documentation for [`QIODevice::readAll()`][qtdoc-qiodevice-readall] for details.
