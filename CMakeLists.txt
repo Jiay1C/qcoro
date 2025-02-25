@@ -125,7 +125,7 @@ if (MSVC)
     endif()
 else()
     # Only enable strict warnings in debug mode
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wextra -Werror -pedantic")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wextra -Werror -pedantic -Wno-language-extension-token")
 
     if (ANDROID)
         include(DetectAndroidNDKVersion)
