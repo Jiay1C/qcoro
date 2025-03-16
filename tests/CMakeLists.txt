@@ -30,6 +30,7 @@ function(qcoro_add_test _name)
         ${TEST_LINK_LIBRARIES}
         Threads::Threads
     )
+    set_target_defaults(test-${_name})
     if (NOT TEST_SKIP_ADD_TEST)
         add_test(NAME test-${_name} COMMAND test-${_name})
         _enable_supressions(${_name})
