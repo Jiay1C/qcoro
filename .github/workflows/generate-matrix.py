@@ -24,11 +24,7 @@ qt = [
     {
         "version": "6.5.0",
         **qt6_config
-    },
-    {
-        "version": "6.8.0",
-        **qt6_config
-    },
+    }
 ]
 
 platforms = [
