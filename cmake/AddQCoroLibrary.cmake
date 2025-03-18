@@ -12,11 +12,7 @@ function(set_target_defaults target_name)
 
     get_target_property(target_type ${target_name} TYPE)
     if (target_type STREQUAL "INTERFACE_LIBRARY")
-        target_compile_definitions(
-            ${target_name}
-            INTERFACE
-            ${DEFAULT_QT_DEFINITIONS}
-        )
+        # We can't set compile definitions for interface libraries as that would leak into user code
         return()
     endif()
 
