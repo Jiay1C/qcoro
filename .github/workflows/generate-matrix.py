@@ -1,15 +1,15 @@
 import json
-from socket import create_connection
 from argparse import ArgumentParser
+from typing import Any, Optional
 
 qt5_config = {
-    "archives": [ "qtbase", "icu", "qtwebsockets", "qtdeclarative", "qtwebchannel", "qtlocation" ],
-    "modules": [ "qtwebengine" ]
+    "archives": ["qtbase", "icu", "qtwebsockets", "qtdeclarative", "qtwebchannel", "qtlocation"],
+    "modules": ["qtwebengine"]
 }
 
 qt6_config = {
-    "archives": [ "qtbase", "icu", "qtdeclarative" ],
-    "modules": [ "qtwebsockets", "qtwebengine", "qtwebchannel", "qtpositioning" ]
+    "archives": ["qtbase", "icu", "qtdeclarative"],
+    "modules": ["qtwebsockets", "qtwebengine", "qtwebchannel", "qtpositioning"]
 }
 
 qt = [
@@ -24,31 +24,35 @@ qt = [
     {
         "version": "6.5.0",
         **qt6_config
-    }
+    },
+    {
+        "version": "6.9.0",
+        **qt6_config
+    },
 ]
 
 platforms = [
     {
         "name": "windows",
         "compilers": [
-            { "name": "msvc" },
-            { "name": "clang-cl" }
+            {"name": "msvc"},
+            {"name": "clang-cl"}
         ]
     },
     {
         "name": "macos",
-        "compilers": [{ "name": "apple-clang" }]
+        "compilers": [{"name": "apple-clang"}]
     },
     {
         "name": "linux",
         "compilers": [
             {
                 "name": "gcc",
-                "versions": [ "11", "12", "13" ]
+                "versions": ["11", "12", "13", "14"]
             },
             {
                 "name": "clang",
-                "versions": [ "15", "16", "17", "dev" ]
+                "versions": ["15", "16", "17", "20", "dev"]
             }
         ]
     }
@@ -60,7 +64,7 @@ output = {
 }
 
 
-def get_os_for_platform(platform):
+def get_os_for_platform(platform: str) -> str:
     if platform == "windows":
         return "windows-2022"
     if platform == "linux":
@@ -69,15 +73,19 @@ def get_os_for_platform(platform):
         return "macos-13"
     raise RuntimeError(f"Invalid platform '{platform}'.")
 
-def get_base_image_for_compiler(compiler):
+
+def get_base_image_for_compiler(compiler: str) -> Optional[str]:
     if compiler == "gcc":
         return "gcc"
-    elif compiler == "clang":
+    if compiler == "clang":
         return "debian"
-    else:
-        return None
+    return None
 
-def create_configuration(qt, platform, compiler, compiler_version = ""):
+
+def create_configuration(
+    qt: dict[str, Any], platform: str, compiler: str,
+    compiler_version: str = ""
+) -> dict[str, Any]:
     return {
         "qt_version": qt["version"],
         "qt_modules": ' '.join(qt["modules"]),
@@ -104,7 +112,10 @@ for qt_version in qt:
             if "versions" in compiler:
                 for compiler_version in compiler["versions"]:
                     output["include"].append(
-                        create_configuration(qt_version, platform["name"], compiler["name"], compiler_version))
+                        create_configuration(
+                            qt_version, platform["name"], compiler["name"], compiler_version
+                        )
+                    )
             else:
                 output["include"].append(
                     create_configuration(qt_version, platform["name"], compiler["name"]))
