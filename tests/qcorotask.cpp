@@ -12,6 +12,7 @@
 #include <QScopeGuard>
 #include <QMetaObject>
 #include <QTimer>
+#include <QElapsedTimer>
 
 #include <chrono>
 
