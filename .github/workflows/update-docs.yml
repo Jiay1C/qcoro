@@ -31,7 +31,7 @@ jobs:
         run: |
           echo "Detected changed files:"
           echo "${{ steps.changed_files.outputs.all_changed_files }}"
-          echo "::set-output name=docs_changed::true"
+          echo "docs_changed=true" >> "$GITHUB_OUTPUT"
 
 
   build:

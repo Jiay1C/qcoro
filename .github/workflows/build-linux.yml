@@ -37,7 +37,7 @@ jobs:
         run: |
           echo "Detected changed files:"
           echo "${{ steps.changed_files.outputs.all_changed_files }}"
-          echo "::set-output name=source_code_changed::true"
+          echo "source_code_changed=true" >> "$GITHUB_OUTPUT"
 
   generate-matrix:
     name: Generate build matrix
@@ -51,7 +51,7 @@ jobs:
       name: Generate matrix
       run: |
         matrix_json=$(python3 ./.github/workflows/generate-matrix.py --platform=linux)
-        echo "::set-output name=matrix::${matrix_json}"
+        echo "matrix=${matrix_json}" >> "$GITHUB_OUTPUT"
 
   build:
     needs: [ generate-matrix, detect_run ]
