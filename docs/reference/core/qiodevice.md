@@ -18,7 +18,7 @@ class QCoroIODevice
 ```
 
 [`QIODevice`][qtdoc-qiodevice] has several different IO operations that can be waited on
-asynchronously. Since `QIODevice` itself doesn't provide the abaility to `co_await` those
+asynchronously. Since `QIODevice` itself doesn't provide the ability to `co_await` those
 operations, QCoro provides a wrapper class called `QCoroIODevice`. To wrap a `QIODevice`
 into a `QCoroIODevice`, use [`qCoro()`][qcoro-coro]:
 

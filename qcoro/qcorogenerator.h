@@ -261,7 +261,7 @@ public:
     /**
      * @brief Returns iterator "pointing" to the first value produced by the generator.
      *
-     * If the generator coroutine did not produce any value and finished immediatelly,
+     * If the generator coroutine did not produce any value and finished immediately,
      * the returned iterator will be equal to end().
      *
      * If the generator coroutine has thrown an exception if will be rethrown from here.
