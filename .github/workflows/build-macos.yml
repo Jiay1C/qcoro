@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - id: changed_files
         uses: tj-actions/changed-files@v46
         name: Get changed files
@@ -46,7 +46,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
     - name: Checkout sources
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - id: set-matrix
       name: Generate matrix
       run: |
@@ -64,7 +64,7 @@ jobs:
 
     steps:
     - name: Checkout sources
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       if: ${{ needs.detect_run.outputs.source_code_changed == 'true' }}
 
     - name: Install Qt
