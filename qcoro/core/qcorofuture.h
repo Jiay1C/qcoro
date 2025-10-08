@@ -62,11 +62,20 @@ private:
     public:
         using WaitForFinishedOperationBase<T>::WaitForFinishedOperationBase;
 
-        T await_resume() const {
+        T await_resume() {
             if (this->mFuture.isFinished()) {
+                this->mFuture.waitForFinished();
                 return this->mFuture.result();
             }
-            return {};
+
+            if constexpr (std::is_default_constructible_v<T>) {
+                return {};
+            }
+            else {
+                // Future was invalid or canceled without finishing. For types without
+                // default constructors, we can't return {}, so we throw an exception.
+                throw std::runtime_error("QFuture was invalid or canceled");
+            }
         }
     };
 
@@ -94,12 +103,19 @@ private:
         using WaitForFinishedOperationBase<T>::WaitForFinishedOperationBase;
 
         T_ await_resume() {
-            if (!this->mFuture.isFinished()) {
-                // Future was canceled without finishing. For move-only types without
-                // default constructors, we can't return {}, so we throw an exception.
-                throw std::runtime_error("QFuture was canceled");
+            if (this->mFuture.isFinished()) {
+                this->mFuture.waitForFinished();
+                return this->mFuture.takeResult();
             }
-            return this->mFuture.takeResult();
+
+            if constexpr (std::is_default_constructible_v<T>) {
+                return {};
+            }
+            else {
+                // Future was invalid or canceled without finishing. For types without
+                // default constructors, we can't return {}, so we throw an exception.
+                throw std::runtime_error("QFuture was invalid or canceled");
+            }
         }
     };
 
