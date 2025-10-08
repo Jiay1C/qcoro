@@ -65,6 +65,11 @@ private:
         T await_resume() {
             if (this->mFuture.isFinished()) {
                 this->mFuture.waitForFinished();
+
+                if (!this->mFuture.isResultReadyAt(0)) {
+                    throw std::runtime_error("QFuture finished without a result");
+                }
+
                 return this->mFuture.result();
             }
 
@@ -105,6 +110,11 @@ private:
         T_ await_resume() {
             if (this->mFuture.isFinished()) {
                 this->mFuture.waitForFinished();
+
+                if (!this->mFuture.isResultReadyAt(0)) {
+                    throw std::runtime_error("QFuture finished without a result");
+                }
+
                 return this->mFuture.takeResult();
             }
 
